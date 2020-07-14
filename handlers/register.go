@@ -1,12 +1,14 @@
 package handlers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
 func RegisterHandler(c *gin.Context) {
 
-	c.JSON(200, gin.H{
-		"message": "GET Register",
+	c.HTML(http.StatusOK, "register.html", gin.H{
+		"title": "Register",
 	})
 }

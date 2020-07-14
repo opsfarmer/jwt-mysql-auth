@@ -1,1 +1,1 @@
-# Auth using JWT and MySql using Gin-Gonic
+# Auth using JWT and MySql in Gin-Gonic.
