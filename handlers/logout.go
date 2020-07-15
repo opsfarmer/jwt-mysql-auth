@@ -10,7 +10,14 @@ import (
 // Logout Handler
 func LogoutHandler(c *gin.Context) {
 
-	c.SetCookie("auth_token", "", 0, "/", "localhost", false, true)
+	ok, _ := IsAuthenticated(c)
+	if !ok {
+		location := url.URL{Path: "/login"}
+		c.Redirect(http.StatusSeeOther, location.RequestURI())
+		return
+	}
+
+	c.SetCookie("auth_token", "", -1, "/", "localhost", false, true)
 
 	location := url.URL{Path: "/login"}
 	c.Redirect(http.StatusSeeOther, location.RequestURI())

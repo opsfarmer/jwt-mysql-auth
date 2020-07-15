@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/parikshitg/jwt-mysql-auth/handlers"
-	"github.com/parikshitg/jwt-mysql-auth/middlewares"
 	"github.com/parikshitg/jwt-mysql-auth/models"
 )
 
@@ -19,7 +18,7 @@ func main() {
 
 	var err error
 	// Open a database
-	models.Db, err = sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/jwt")
+	models.Db, err = sql.Open("mysql", "root:Poonam26#@tcp(127.0.0.1:3306)/jwt")
 	if err != nil {
 		log.Println("Db Open Error:", err)
 	}
@@ -46,12 +45,12 @@ func main() {
 
 	// Routes
 	r.GET("/", handlers.HomeHandler)
-	r.GET("/login", middlewares.UnauthenticatedUser(), handlers.GetLogin)
-	r.POST("/login", middlewares.UnauthenticatedUser(), handlers.PostLogin)
-	r.GET("/logout", middlewares.AuthenticatedUser(), handlers.LogoutHandler)
-	r.GET("/register", middlewares.UnauthenticatedUser(), handlers.GetRegister)
-	r.POST("/register", middlewares.UnauthenticatedUser(), handlers.PostRegister)
-	r.GET("/welcome", middlewares.AuthenticatedUser(), handlers.WelcomeHandler)
+	r.GET("/login", handlers.GetLogin)
+	r.POST("/login", handlers.PostLogin)
+	r.GET("/logout", handlers.LogoutHandler)
+	r.GET("/register", handlers.GetRegister)
+	r.POST("/register", handlers.PostRegister)
+	r.GET("/welcome", handlers.WelcomeHandler)
 
 	// Static Files
 	r.Static("/css", "static/css")

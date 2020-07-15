@@ -3,6 +3,7 @@ package handlers
 import (
 	"log"
 	"net/http"
+	"net/url"
 
 	"github.com/gin-gonic/gin"
 	"github.com/parikshitg/jwt-mysql-auth/models"
@@ -10,6 +11,13 @@ import (
 
 // Register Handler
 func GetRegister(c *gin.Context) {
+
+	ok, _ := IsAuthenticated(c)
+	if ok {
+		location := url.URL{Path: "/welcome"}
+		c.Redirect(http.StatusSeeOther, location.RequestURI())
+		return
+	}
 
 	c.HTML(http.StatusOK, "register.html", gin.H{
 		"title": "Register",

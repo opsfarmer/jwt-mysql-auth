@@ -11,7 +11,7 @@ import (
 	"github.com/parikshitg/jwt-mysql-auth/models"
 )
 
-var jwtKey = []byte("my_secret_key")
+var signingKey = []byte("my_secret_key")
 
 type Claims struct {
 	Username string
@@ -20,6 +20,13 @@ type Claims struct {
 
 // Get Login Handler
 func GetLogin(c *gin.Context) {
+
+	ok, _ := IsAuthenticated(c)
+	if ok {
+		location := url.URL{Path: "/welcome"}
+		c.Redirect(http.StatusSeeOther, location.RequestURI())
+		return
+	}
 
 	c.HTML(http.StatusOK, "login.html", gin.H{
 		"title": "Login",
@@ -44,9 +51,6 @@ func PostLogin(c *gin.Context) {
 
 		if username == dbusername && password == dbpassword {
 
-			// Jwt Starts--------------------------------------------------------------------------------------
-
-			// tokens expiration time
 			expirationTime := time.Now().Add(5 * time.Minute)
 
 			claims := &Claims{
@@ -57,16 +61,14 @@ func PostLogin(c *gin.Context) {
 			}
 
 			token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-			tokenString, err := token.SignedString(jwtKey)
+			tokenString, err := token.SignedString(signingKey)
 			if err != nil {
-				log.Println(http.StatusInternalServerError)
+				log.Println("Internal server Error :", http.StatusInternalServerError)
 				return
 			}
 
-			// set Cookie
-			c.SetCookie("auth_token", tokenString, 3600, "/", "localhost", false, true)
-
-			// Jwt Ends------------------------------------------------------------------------------------------
+			// Set Token
+			c.SetCookie("auth_token", tokenString, 300, "/", "localhost", false, true)
 
 			location := url.URL{Path: "/welcome"}
 			c.Redirect(http.StatusSeeOther, location.RequestURI())
