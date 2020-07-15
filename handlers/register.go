@@ -31,10 +31,17 @@ func PostRegister(c *gin.Context) {
 	password := c.PostForm("password")
 	password2 := c.PostForm("password2")
 
+	var flash string
+
 	// validating fields
 	if username == "" || password == "" || password2 == "" {
 
-		log.Println("Fields can not be empty!!")
+		flash = "Fields can not be empty!!"
+		log.Println(flash)
+		c.HTML(http.StatusOK, "register.html", gin.H{
+			"title": "Register",
+			"flash": flash,
+		})
 		return
 	}
 
@@ -43,29 +50,46 @@ func PostRegister(c *gin.Context) {
 
 	if dbusername != "" || dbpassword != "" {
 
-		log.Println("User Already Registered!!")
+		flash = "User Already Registered!!"
+		log.Println(flash)
+		c.HTML(http.StatusOK, "register.html", gin.H{
+			"title": "Register",
+			"flash": flash,
+		})
 		return
 	}
 
 	// If username already taken
 	if username == dbusername {
 
-		log.Println("This username is taken.")
+		flash = "This username is taken."
+		log.Println(flash)
+		c.HTML(http.StatusOK, "register.html", gin.H{
+			"title": "Register",
+			"flash": flash,
+		})
 		return
 	}
 
 	// If passwords didn't match
 	if password != password2 {
 
-		log.Println("Passwords Doesn't Match !!")
+		flash = "Passwords Doesn't Match !!"
+		log.Println(flash)
+		c.HTML(http.StatusOK, "register.html", gin.H{
+			"title": "Register",
+			"flash": flash,
+		})
 		return
 	}
 
 	// Create User
 	models.CreateUser(username, password)
-	log.Println("Registered Successfully.")
+	flash = "Registered Successfully. Please Login."
+	log.Println(flash)
 
 	c.HTML(http.StatusOK, "register.html", gin.H{
 		"title": "Register",
+		"flash": flash,
 	})
 }
