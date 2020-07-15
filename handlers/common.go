@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Check if user is Authenticated
 func IsAuthenticated(c *gin.Context) (bool, *Claims) {
 
 	// Get Cookie

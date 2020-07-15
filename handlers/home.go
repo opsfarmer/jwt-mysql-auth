@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Home Handler
+// Home Page Handler
 func HomeHandler(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "home.html", gin.H{

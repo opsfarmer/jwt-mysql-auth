@@ -30,9 +30,12 @@
     <div class="container">
       <br><br>
       <h3 class="header center orange-text">Welcome {{ .message }} !!</h3>
-      <!-- <div class="row center">
-        <h5 class="header col s12 light">JWT Authentication in Gin-Gonic using MySql.</h5>
-      </div> -->
+      <div class="row center">
+        <h5 class="header col s12 dark">{{ .message }}'s Details</h5>
+      </div>
+      <h6 class=" center">ID :  {{ .id }}</h6>
+      <h6 class=" center ">USERNAME : {{ .username }}</h6>
+      <h6 class=" center ">CREATED_AT : {{ .created_at }}</h6>
     </div>
   </div>
   <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

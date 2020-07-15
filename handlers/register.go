@@ -9,7 +9,7 @@ import (
 	"github.com/parikshitg/jwt-mysql-auth/models"
 )
 
-// Register Handler
+// Register Get Handler
 func GetRegister(c *gin.Context) {
 
 	ok, _ := IsAuthenticated(c)
@@ -24,6 +24,7 @@ func GetRegister(c *gin.Context) {
 	})
 }
 
+// Register Post Handler
 func PostRegister(c *gin.Context) {
 
 	// Reading form values

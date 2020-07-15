@@ -13,6 +13,7 @@ import (
 
 var signingKey = []byte("my_secret_key")
 
+// JWT claims structure
 type Claims struct {
 	Username string
 	jwt.StandardClaims
