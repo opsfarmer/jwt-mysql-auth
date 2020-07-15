@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"net/url"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,7 +10,8 @@ import (
 // Logout Handler
 func LogoutHandler(c *gin.Context) {
 
-	c.HTML(http.StatusOK, "login.html", gin.H{
-		"title": "Login",
-	})
+	c.SetCookie("auth_token", "", 0, "/", "localhost", false, true)
+
+	location := url.URL{Path: "/login"}
+	c.Redirect(http.StatusSeeOther, location.RequestURI())
 }

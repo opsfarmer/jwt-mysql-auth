@@ -4,10 +4,19 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/parikshitg/jwt-mysql-auth/models"
 )
+
+var jwtKey = []byte("my_secret_key")
+
+type Claims struct {
+	Username string
+	jwt.StandardClaims
+}
 
 // Get Login Handler
 func GetLogin(c *gin.Context) {
@@ -34,6 +43,30 @@ func PostLogin(c *gin.Context) {
 		dbusername, dbpassword := models.ReadUser(username, password)
 
 		if username == dbusername && password == dbpassword {
+
+			// Jwt Starts--------------------------------------------------------------------------------------
+
+			// tokens expiration time
+			expirationTime := time.Now().Add(5 * time.Minute)
+
+			claims := &Claims{
+				Username: username,
+				StandardClaims: jwt.StandardClaims{
+					ExpiresAt: expirationTime.Unix(),
+				},
+			}
+
+			token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+			tokenString, err := token.SignedString(jwtKey)
+			if err != nil {
+				log.Println(http.StatusInternalServerError)
+				return
+			}
+
+			// set Cookie
+			c.SetCookie("auth_token", tokenString, 3600, "/", "localhost", false, true)
+
+			// Jwt Ends------------------------------------------------------------------------------------------
 
 			location := url.URL{Path: "/welcome"}
 			c.Redirect(http.StatusSeeOther, location.RequestURI())

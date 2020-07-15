@@ -17,7 +17,7 @@ type User struct {
 	CreatedAt string
 }
 
-// Create user function creates a new user in users table
+// Create user function creates a new user in  table
 func CreateUser(username, password string) {
 
 	createdAt := time.Now()
@@ -28,7 +28,7 @@ func CreateUser(username, password string) {
 	}
 }
 
-// Read user reads a user from users table
+// Read user reads a user from  table
 func ReadUser(username, password string) (string, string) {
 
 	var dbusername, dbpassword string
