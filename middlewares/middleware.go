@@ -10,12 +10,12 @@ import (
 
 // Checks if user is authenticated (middleware)
 func AuthenticatedUser() gin.HandlerFunc {
+
 	return func(c *gin.Context) {
 
 		cookie, err := c.Cookie("auth_token")
 		if err != nil {
 			log.Println("Cookie error : ", err)
-			return
 		}
 
 		if cookie == "" {
@@ -28,6 +28,7 @@ func AuthenticatedUser() gin.HandlerFunc {
 
 // checks unauthenticated user (middleware)
 func UnauthenticatedUser() gin.HandlerFunc {
+
 	return func(c *gin.Context) {
 
 		cookie, err := c.Cookie("auth_token")
