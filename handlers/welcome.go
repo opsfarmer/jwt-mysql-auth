@@ -27,7 +27,7 @@ func WelcomeHandler(c *gin.Context) {
 	}
 
 	// Reading Data From User Specific Database (starts)
-	db, err := sql.Open("mysql", "root:Poonam26#@tcp(127.0.0.1:3306)/"+claims.Username)
+	db, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/"+claims.Username)
 	if err != nil {
 		log.Println("user specific db open error:", err)
 		return

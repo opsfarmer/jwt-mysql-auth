@@ -46,7 +46,7 @@ func ReadUser(username, password string) (string, string) {
 func CreateUserDatabase(username string) {
 
 	// Database connection
-	db, err := sql.Open("mysql", "root:Poonam26#@tcp(127.0.0.1:3306)/")
+	db, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {

@@ -18,7 +18,7 @@ func main() {
 
 	var err error
 	// Open a database
-	models.Db, err = sql.Open("mysql", "root:Poonam26#@tcp(127.0.0.1:3306)/jwt")
+	models.Db, err = sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/jwt")
 	if err != nil {
 		log.Println("Db Open Error:", err)
 	}
