@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"database/sql"
 	"log"
 	"net/http"
 	"net/url"
@@ -13,6 +12,8 @@ import (
 // Welcome Handler
 func WelcomeHandler(c *gin.Context) {
 
+	var dbusername, dbid, dbcreatedat string
+
 	ok, claims := IsAuthenticated(c)
 	if !ok {
 		location := url.URL{Path: "/login"}
@@ -20,28 +21,21 @@ func WelcomeHandler(c *gin.Context) {
 		return
 	}
 
-	var dbusername, dbid, dbcreatedat string
-	query := "SELECT id, username, created_at  FROM jwtusers WHERE username = ?"
-	if err := models.Db.QueryRow(query, claims.Username).Scan(&dbid, &dbusername, &dbcreatedat); err != nil {
-		log.Println("read user error : ", err)
-	}
+	_, database := models.ExistingUser(claims.Username)
 
-	// Reading Data From User Specific Database (starts)
-	db, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/"+claims.Username)
-	if err != nil {
-		log.Println("user specific db open error:", err)
-		return
-	}
+	if database == "test1" {
 
-	var dbuname, dbabout string
-	query2 := "SELECT username, about FROM details WHERE username = ?"
-	if err := db.QueryRow(query2, claims.Username).Scan(&dbuname, &dbabout); err != nil {
-		log.Println("read user details error : ", err)
-		return
-	}
+		query := "SELECT id, username, created_at  FROM test1table WHERE username = ?"
+		if err := models.Db1.QueryRow(query, claims.Username).Scan(&dbid, &dbusername, &dbcreatedat); err != nil {
+			log.Println("read user error : ", err)
+		}
+	} else {
 
-	defer db.Close()
-	// Reading Data From User Specific Database (ends)
+		query := "SELECT id, username, created_at  FROM test2table WHERE username = ?"
+		if err := models.Db2.QueryRow(query, claims.Username).Scan(&dbid, &dbusername, &dbcreatedat); err != nil {
+			log.Println("read user error : ", err)
+		}
+	}
 
 	c.HTML(http.StatusOK, "welcome.html", gin.H{
 		"title":      "Welcome Page",
@@ -49,7 +43,6 @@ func WelcomeHandler(c *gin.Context) {
 		"id":         dbid,
 		"username":   dbusername,
 		"created_at": dbcreatedat,
-		"about":      dbabout,
-		"dbuname":    dbuname,
+		"present_in": database,
 	})
 }

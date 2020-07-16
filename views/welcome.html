@@ -31,16 +31,13 @@
       <br><br>
       <h3 class="header center orange-text">Welcome {{ .message }} !!</h3>
       <div class="row center">
-        <h5 class="header col s12 dark">{{ .message }}'s Details (from Common Database)</h5>
+        <h5 class="header col s12 dark">{{ .message }}'s Details</h5>
       </div>
       <h6 class=" center">ID :  {{ .id }}</h6>
       <h6 class=" center ">USERNAME : {{ .username }}</h6>
       <h6 class=" center ">CREATED_AT : {{ .created_at }}</h6>
-      <hr>
-      <h6 class="center blue-text"><u>Reading user details from User Specific Database.</u> (from user specific database)</h6>
-      <h6 class="center">Username : {{ .dbuname }}</h6>
-      <h6 class="center">About : {{ .about }}</h6>
+      <h6 class=" center ">Present_in : <u>{{ .present_in }}</u> database.</h6>
     </div>
   </div>
-  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br>
 {{ template "footer.html" . }}

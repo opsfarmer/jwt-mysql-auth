@@ -40,6 +40,8 @@ func PostLogin(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
 
+	var dbusername, dbpassword string
+
 	var flash string
 
 	if username == "" || password == "" {
@@ -52,7 +54,25 @@ func PostLogin(c *gin.Context) {
 		})
 	} else {
 
-		dbusername, dbpassword := models.ReadUser(username, password)
+		exists, database := models.ExistingUser(username)
+		if !exists {
+
+			flash = "user doesn't exist!!"
+			log.Println(flash)
+			c.HTML(http.StatusOK, "login.html", gin.H{
+				"title": "Login",
+				"flash": flash,
+			})
+			return
+		}
+
+		if database == "test1" {
+
+			dbusername, dbpassword = models.ReadUserTest1(username, password)
+		} else {
+
+			dbusername, dbpassword = models.ReadUserTest2(username, password)
+		}
 
 		if username == dbusername && password == dbpassword {
 

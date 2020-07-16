@@ -34,11 +34,12 @@ func PostRegister(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
 	password2 := c.PostForm("password2")
+	database := c.PostForm("database")
 
 	var flash string
 
 	// validating fields
-	if username == "" || password == "" || password2 == "" {
+	if username == "" || password == "" || password2 == "" || database == "" {
 
 		flash = "Fields can not be empty!!"
 		log.Println(flash)
@@ -50,9 +51,8 @@ func PostRegister(c *gin.Context) {
 	}
 
 	// Check if already registered
-	dbusername, dbpassword := models.ReadUser(username, password)
-
-	if dbusername != "" || dbpassword != "" {
+	exists, _ := models.ExistingUser(username)
+	if exists {
 
 		flash = "User Already Registered!!"
 		log.Println(flash)
@@ -60,18 +60,7 @@ func PostRegister(c *gin.Context) {
 			"title": "Register",
 			"flash": flash,
 		})
-		return
-	}
 
-	// If username already taken
-	if username == dbusername {
-
-		flash = "This username is taken."
-		log.Println(flash)
-		c.HTML(http.StatusOK, "register.html", gin.H{
-			"title": "Register",
-			"flash": flash,
-		})
 		return
 	}
 
@@ -87,13 +76,17 @@ func PostRegister(c *gin.Context) {
 		return
 	}
 
-	// Create User
-	models.CreateUser(username, password)
-	flash = "Registered Successfully. Please Login."
-	log.Println(flash)
+	if database == "test1" {
 
-	// Create User Specific Database
-	models.CreateUserDatabase(username)
+		models.CreateUserTest1(username, password)
+		flash = "Registered Successfully. Please Login."
+		log.Println(flash)
+	} else {
+
+		models.CreateUserTest2(username, password)
+		flash = "Registered Successfully. Please Login."
+		log.Println(flash)
+	}
 
 	c.HTML(http.StatusOK, "register.html", gin.H{
 		"title": "Register",
