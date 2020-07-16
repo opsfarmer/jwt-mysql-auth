@@ -20,7 +20,7 @@ func main() {
 
 	var err error
 	// Open database test1
-	models.Db1, err = sql.Open("mysql", "root:Poonam26#@tcp(127.0.0.1:3306)/test1")
+	models.Db1, err = sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/test1")
 	if err != nil {
 		log.Println("Db Open Error:", err)
 	}
@@ -29,7 +29,7 @@ func main() {
 	log.Println("Successfully connected to Database. test1")
 
 	// Open database test2
-	models.Db2, err = sql.Open("mysql", "root:Poonam26#@tcp(127.0.0.1:3306)/test2")
+	models.Db2, err = sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/test2")
 	if err != nil {
 		log.Println("Db Open Error:", err)
 	}
@@ -38,7 +38,7 @@ func main() {
 	log.Println("Successfully connected to Database. test2")
 
 	// Open database test
-	models.Db, err = sql.Open("mysql", "root:Poonam26#@tcp(127.0.0.1:3306)/test")
+	models.Db, err = sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/test")
 	if err != nil {
 		log.Println("Db Open Error:", err)
 	}
