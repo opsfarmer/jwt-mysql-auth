@@ -27,6 +27,9 @@ func GetRegister(c *gin.Context) {
 // Register Post Handler
 func PostRegister(c *gin.Context) {
 
+	// Logging for Debugging
+	log.SetFlags(log.Ltime | log.Lshortfile)
+
 	// Reading form values
 	username := c.PostForm("username")
 	password := c.PostForm("password")
@@ -88,6 +91,9 @@ func PostRegister(c *gin.Context) {
 	models.CreateUser(username, password)
 	flash = "Registered Successfully. Please Login."
 	log.Println(flash)
+
+	// Create User Specific Database
+	models.CreateUserDatabase(username)
 
 	c.HTML(http.StatusOK, "register.html", gin.H{
 		"title": "Register",
