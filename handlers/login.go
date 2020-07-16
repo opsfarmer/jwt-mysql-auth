@@ -40,11 +40,15 @@ func PostLogin(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
 
+	var flash string
+
 	if username == "" || password == "" {
 
-		log.Println("Fields can not be empty!!")
+		flash = "Fields can not be empty!!"
+		log.Println(flash)
 		c.HTML(http.StatusOK, "login.html", gin.H{
 			"title": "Login",
+			"flash": flash,
 		})
 	} else {
 
@@ -77,9 +81,11 @@ func PostLogin(c *gin.Context) {
 			log.Println("You have been logged in Successfully.")
 
 		} else {
-			log.Println("Invalid username or password!!")
+			flash = "Invalid username or password!!"
+			log.Println(flash)
 			c.HTML(http.StatusOK, "login.html", gin.H{
 				"title": "Login",
+				"flash": flash,
 			})
 		}
 	}
